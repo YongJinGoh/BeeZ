@@ -10,7 +10,7 @@ class QrResultWithoutImage extends StatelessWidget {
   QrResultWithoutImage({required this.text});
 
   @override
-  Widget build(BuildContext context) {git config --list
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       width: 1.sw,
