@@ -16,6 +16,7 @@ import '../Model/merchant_model.dart';
 import '../Model/other_category_model.dart';
 import '../Utils/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
+import '../Widget/main_title_bar.dart';
 
 // class MerchantPage extends StatefulWidget {
 //   String? data;
@@ -67,70 +68,15 @@ class _MerchantPageState extends State<MerchantPage> {
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting &&
               snapshot.hasData == null) {
-            return SizedBox.expand(
-                child: SingleChildScrollView(
-              physics: ScrollPhysics(),
-              child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Stack(
-                        alignment: Alignment.topCenter,
-                        children: [
-                          Container(
-                            height: 360.h,
-                            color: Constants.COLORS_PRIMARY_COLOR,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 40.h),
-                            child: Text(
-                              'MERCHANT'.tr(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 66.sp,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(height: 20.h),
-                                //Pass in empty search from here then update for search later.
-                                SearchInput(
-                                  textController: searchString,
-                                  onTap: () => search(),
-                                ),
-                              ]),
-                          Container(
-                            margin: EdgeInsets.only(top: 200.h),
-                            child: MerchantCategory(
-                              selected: selected,
-                              onTap: () => searchViaCategory(selected, context),
-                            ),
-                          ),
-                        ],
-                      ),
-                      MerchantSortingBar(
-                        onTap: () => viewAll(),
-                      ),
-                      // Container(child: Text('No internet'),),
-                    ],
-                  )),
-            ));
-          }
-          return Scaffold(
+            return Scaffold(
               backgroundColor: Colors.transparent,
               resizeToAvoidBottomInset: true,
               extendBodyBehindAppBar: true,
               body: Builder(
                 builder: (ctx) => Container(
-                    child: SingleChildScrollView(
-                  physics: ScrollPhysics(),
-                  child: Container(
+                  child: SingleChildScrollView(
+                    physics: ScrollPhysics(),
+                    child: Container(
                       color: Colors.white,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -297,49 +243,306 @@ class _MerchantPageState extends State<MerchantPage> {
                               ),
                             ],
                           ),
-                          MerchantSortingBar(
-                            onTap: () => viewAll(),
+                          Container(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                margin: EdgeInsets.only(left: 40.w),
+                                child: Text(
+                                  'MERCHANT'.tr(),
+                                  style: TextStyle(
+                                    fontSize: 48.sp,
+                                    color:
+                                        Constants.COLORS_PRIMARY_ORANGE_COLOR,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          // CircularProgressIndicator(),
-                          _isLoading
-                              ? CircularProgressIndicator()
-                              : _isError
-                                  ? Dialog(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(20),
-                                        child:
-                                            Text('NO_INTERNET_CONNECTION'.tr()),
-                                      ),
-                                    )
-                                  : _isEmpty
-                                      ? Dialog(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(20),
-                                            child: Text(
-                                                'ALERT_NO_ITEM_AT_THIS_MOMENT'
-                                                    .tr()),
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: lists.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            MerchantModel merchant =
-                                                lists[index];
-                                            return MerchantListItem(
-                                                data: merchant);
-                                          },
-                                        )
+                          ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: lists.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              MerchantModel merchant = lists[index];
+                              return MerchantListItem(data: merchant);
+                            },
+                          )
+                          // _isLoading
+                          //     ? CircularProgressIndicator()
+                          //     : _isError
+                          //         ? Dialog(
+                          //             child: Padding(
+                          //               padding: EdgeInsets.all(20),
+                          //               child:
+                          //                   Text('NO_INTERNET_CONNECTION'.tr()),
+                          //             ),
+                          //           )
+                          //         : _isEmpty
+                          //             ? Dialog(
+                          //                 child: Padding(
+                          //                   padding: EdgeInsets.all(20),
+                          //                   child: Text(
+                          //                       'ALERT_NO_ITEM_AT_THIS_MOMENT'
+                          //                           .tr()),
+                          //                 ),
+                          //               )
+                          //             : ListView.builder(
+                          //                 physics: NeverScrollableScrollPhysics(),
+                          //                 shrinkWrap: true,
+                          //                 itemCount: lists.length,
+                          //                 itemBuilder:
+                          //                     (BuildContext context, int index) {
+                          //                   MerchantModel merchant = lists[index];
+                          //                   return MerchantListItem(
+                          //                       data: merchant);
+                          //                 },
+                          //               )
                         ],
-                      )),
-                )),
-              ));
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+          return Scaffold(
+            body: Container(
+              color: Constants.COLORS_PRIMARY_COLOR,
+              child: SafeArea(
+                left: false,
+                right: false,
+                bottom: false,
+                child: Container(
+                  // height: 1.sh,
+                  width: 1.sw,
+                  color: Colors.white,
+                  child: SingleChildScrollView(
+                    physics: ScrollPhysics(),
+                    child: Container(
+                      color: Colors.white,
+                      child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            MainTitleBar(
+                                title: 'Merchants',
+                                action: () => Navigator.pop(context)),
+                            Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                Container(
+                                  height: 300.h,
+                                  color: Constants.COLORS_PRIMARY_COLOR,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(top: 40.h),
+                                  child: SearchInput(
+                                    textController: searchTextController,
+                                    onTap: () => search(),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 200.h),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(40)),
+                                    ),
+                                    child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      child: IntrinsicHeight(
+                                        child: Column(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              height: 5.h,
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                MerchantCategoryGrid(
+                                                  data: 'CATEGORY_FNB'.tr(),
+                                                  image:
+                                                      'assets/images/main-cat-icon-f&b.png',
+                                                  maxLine: 2,
+                                                  fSize: 46.sp,
+                                                  onTap: () =>
+                                                      searchViaCategory(
+                                                          'F&B', context),
+                                                ),
+                                                VerticalDivider(
+                                                  width: 4,
+                                                  thickness: 1,
+                                                ),
+                                                //update icon here
+                                                MerchantCategoryGrid(
+                                                  data: 'CATEGORY_AUTO'.tr(),
+                                                  image:
+                                                      'assets/images/icon_automotive.png',
+                                                  maxLine: 1,
+                                                  fSize: 46.sp,
+                                                  onTap: () =>
+                                                      searchViaCategory(
+                                                          'automobile',
+                                                          context),
+                                                ),
+                                                VerticalDivider(
+                                                  width: 4,
+                                                  thickness: 1,
+                                                ),
+                                                MerchantCategoryGrid(
+                                                  data: 'CATEGORY_BEAUTY'.tr(),
+                                                  image:
+                                                      'assets/images/main-cat-icon-beauty.png',
+                                                  maxLine: 1,
+                                                  fSize: 46.sp,
+                                                  onTap: () =>
+                                                      searchViaCategory(
+                                                          'beauty', context),
+                                                ),
+                                                VerticalDivider(
+                                                  width: 4,
+                                                  thickness: 1,
+                                                ),
+                                                MerchantCategoryGrid(
+                                                  data: 'CATEGORY_FITNESS'.tr(),
+                                                  image:
+                                                      'assets/images/main-cat-icon-fitness.png',
+                                                  maxLine: 1,
+                                                  fSize: 12,
+                                                  onTap: () =>
+                                                      searchViaCategory(
+                                                          'fitness', context),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 20.h,
+                                            ),
+                                            Row(
+                                              children: [
+                                                MerchantCategoryGrid(
+                                                  data: 'CATEGORY_HEALTH'.tr(),
+                                                  image:
+                                                      'assets/images/main-cat-icon-health.png',
+                                                  maxLine: 1,
+                                                  fSize: 46.sp,
+                                                  onTap: () =>
+                                                      searchViaCategory(
+                                                          'health', context),
+                                                ),
+                                                VerticalDivider(
+                                                  width: 4,
+                                                  thickness: 1,
+                                                ),
+                                                MerchantCategoryGrid(
+                                                  data: 'CATEGORY_CHARITY'.tr(),
+                                                  image:
+                                                      'assets/images/main-cat-icon-holiday.png',
+                                                  maxLine: 1,
+                                                  fSize: 46.sp,
+                                                  onTap: () =>
+                                                      searchViaCategory(
+                                                          'charity', context),
+                                                ),
+                                                VerticalDivider(
+                                                  width: 4,
+                                                  thickness: 1,
+                                                ),
+                                                MerchantCategoryGrid(
+                                                  data: 'CATEGORY_HOUSE_SERVICE'
+                                                      .tr(),
+                                                  image:
+                                                      'assets/images/main-cat-icon-houseService.png',
+                                                  maxLine: 1,
+                                                  fSize: 46.sp,
+                                                  onTap: () =>
+                                                      searchViaCategory(
+                                                          'services', context),
+                                                ),
+                                                VerticalDivider(
+                                                  width: 4,
+                                                  thickness: 1,
+                                                ),
+                                                MerchantCategoryGrid(
+                                                  data: 'CATEGORY_OTHERS'.tr(),
+                                                  image:
+                                                      'assets/images/main-cat-icon-others.png',
+                                                  maxLine: 1,
+                                                  fSize: 46.sp,
+                                                  onTap: () =>
+                                                      searchViaCategory(
+                                                          'others', context),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  margin:
+                                      EdgeInsets.only(left: 40.w, top: 20.h),
+                                  child: Text(
+                                    'MERCHANT'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 48.sp,
+                                      color:
+                                          Constants.COLORS_PRIMARY_ORANGE_COLOR,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            _isLoading
+                                ? CircularProgressIndicator()
+                                : _isError
+                                    ? Dialog(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(20),
+                                          child: Text(
+                                              'NO_INTERNET_CONNECTION'.tr()),
+                                        ),
+                                      )
+                                    : _isEmpty
+                                        ? Dialog(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(20),
+                                              child: Text(
+                                                  'ALERT_NO_ITEM_AT_THIS_MOMENT'
+                                                      .tr()),
+                                            ),
+                                          )
+                                        : ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: lists.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              MerchantModel merchant =
+                                                  lists[index];
+                                              return MerchantListItem(
+                                                  data: merchant);
+                                            },
+                                          )
+                          ]),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
         },
         future: _tasks);
   }

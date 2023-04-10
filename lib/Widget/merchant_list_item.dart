@@ -67,25 +67,40 @@ class _MerchantListItemState extends State<MerchantListItem> {
                     );
                   }
                 },
-                child: Container(
-                  padding: EdgeInsets.all(2),
-                  height: 230.w,
-                  width: 230.w,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
+                child: Column(
+                  children: [
+                    widget.data.isFoodCourt
+                        ? Container(
+                            padding: EdgeInsets.only(left: 0.w, top: 10.h),
+                            child: Text(
+                              'Community',
+                              style: TextStyle(
+                                  color: Constants.COLORS_PRIMARY_ORANGE_COLOR,
+                                  fontSize: 30.sp),
+                            ),
+                          )
+                        : Container(),
+                    Container(
+                      padding: EdgeInsets.all(2),
                       height: 230.w,
                       width: 230.w,
-                      fit: BoxFit.cover,
-                      imageUrl: widget.data.picture,
-                      placeholder: (context, url) => Image.asset(
-                        'assets/images/appicon.png',
-                      ),
-                      errorWidget: (context, url, error) => Image.asset(
-                        'assets/images/appicon.png',
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          height: 230.w,
+                          width: 230.w,
+                          fit: BoxFit.cover,
+                          imageUrl: widget.data.picture,
+                          placeholder: (context, url) => Image.asset(
+                            'assets/images/appicon.png',
+                          ),
+                          errorWidget: (context, url, error) => Image.asset(
+                            'assets/images/appicon.png',
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
 

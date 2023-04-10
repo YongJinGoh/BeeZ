@@ -71,6 +71,8 @@ class ApiCall {
         'cBxBBYu4Qvuklp4ySaPQcx:APA91bFiVRvYNQ3Zpuwmh1I_8d62DRkKWHVwABtZsfs5s92FKRNramHL8rueCUvm4de5J_cO3-fFGZGuAWd72-_EZaqI9HsI7UDWeZL--yZ9uutwGeKQHbPJkvtlfqiS6upVJFIxjKJJ';
     header['appkey'] = 'fUPvZAmZnIArSZl9TauXbtVyTJHEaik6gju4qWDU';
     header['Accept'] = 'application/json';
+    // header['Authorization'] =
+    //     'Bearer 1cuLkptVqePOAjowx8pqq34Rjwa7Mj8nSiC53gOIwN3np0tsR7oDBux2WIy280zLS7Ht35Cy8CCp9Wqk';
     header['Authorization'] = 'Bearer $token';
     String url = "$baseUrl/$method";
     // String url = "$baseUrl";

@@ -20,7 +20,10 @@ class _RewardsPageState extends State<RewardsPage> {
   bool _isLoading = false;
   bool _isLogin = false;
   bool _isEmpty = false;
+
   bool _rewardSelected = true;
+  bool _voucherSelected = false;
+  bool _couponSelected = false;
 
   late Future<List<RewardModel>> _tasks;
   List<RewardModel> lists = [];
@@ -90,10 +93,6 @@ class _RewardsPageState extends State<RewardsPage> {
                                     BorderRadius.all(Radius.circular(40)),
                               ),
                             ),
-                            // Container(
-                            //   margin: EdgeInsets.only(top: 440.h,left: 40.w,right: 40.w),
-                            //   child: RewardsTabBar(),
-                            // ),
                           ],
                         ),
                       ],
@@ -154,6 +153,8 @@ class _RewardsPageState extends State<RewardsPage> {
                                     onTap: (() {
                                       setState(() {
                                         _rewardSelected = true;
+                                        _voucherSelected = false;
+                                        _couponSelected = false;
                                       });
                                     }),
                                     child: Column(
@@ -189,6 +190,8 @@ class _RewardsPageState extends State<RewardsPage> {
                                     onTap: (() {
                                       setState(() {
                                         _rewardSelected = false;
+                                        _voucherSelected = true;
+                                        _couponSelected = false;
                                       });
                                     }),
                                     child: Column(
@@ -205,21 +208,58 @@ class _RewardsPageState extends State<RewardsPage> {
                                         SizedBox(
                                           height: 8.h,
                                         ),
-                                        _rewardSelected
+                                        _voucherSelected
                                             ? Container(
-                                                color: Colors.white,
+                                                color: Constants
+                                                    .COLORS_PRIMARY_COLOR,
                                                 width: 0.3.sw,
                                                 height: 6.h,
                                               )
                                             : Container(
-                                                color: Constants
-                                                    .COLORS_PRIMARY_COLOR,
+                                                color: Colors.white,
                                                 width: 0.3.sw,
                                                 height: 6.h,
                                               ),
                                       ],
                                     ),
                                   ),
+                                  // GestureDetector(
+                                  //   onTap: (() {
+                                  //     setState(() {
+                                  //       _rewardSelected = false;
+                                  //       _voucherSelected = false;
+                                  //       _couponSelected = true;
+                                  //     });
+                                  //   }),
+                                  //   child: Column(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: [
+                                  //       Text(
+                                  //         'Coupon',
+                                  //         style: TextStyle(
+                                  //             fontSize: 44.sp,
+                                  //             color: Constants
+                                  //                 .COLORS_PRIMARY_COLOR),
+                                  //       ),
+                                  //       SizedBox(
+                                  //         height: 8.h,
+                                  //       ),
+                                  //       _couponSelected
+                                  //           ? Container(
+                                  //               color: Constants
+                                  //                   .COLORS_PRIMARY_COLOR,
+                                  //               width: 0.3.sw,
+                                  //               height: 6.h,
+                                  //             )
+                                  //           : Container(
+                                  //               color: Colors.white,
+                                  //               width: 0.3.sw,
+                                  //               height: 6.h,
+                                  //             ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                 ]),
                           ),
                           _isLoading
@@ -253,24 +293,45 @@ class _RewardsPageState extends State<RewardsPage> {
                                             },
                                           ),
                                         )
-                                      : Container(
-                                          margin: EdgeInsets.only(
-                                              top: 460.h, bottom: 40.h),
-                                          child: ListView.builder(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: voucherList.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              VoucherModel model =
-                                                  voucherList[index];
-                                              return VoucherListItem(
-                                                data: model,
-                                              );
-                                            },
-                                          ),
-                                        )
+                                      : _voucherSelected
+                                          ? Container(
+                                              margin: EdgeInsets.only(
+                                                  top: 460.h, bottom: 40.h),
+                                              child: ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: voucherList.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  VoucherModel model =
+                                                      voucherList[index];
+                                                  return VoucherListItem(
+                                                    data: model,
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : Container(
+                                              margin: EdgeInsets.only(
+                                                  top: 460.h, bottom: 40.h),
+                                              child: ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: voucherList.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  VoucherModel model =
+                                                      voucherList[index];
+                                                  return VoucherListItem(
+                                                    data: model,
+                                                  );
+                                                },
+                                              ),
+                                            )
                         ],
                       ),
                     ],

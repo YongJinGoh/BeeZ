@@ -116,6 +116,24 @@ class _AttendEventPageState extends State<AttendEventPage> {
                             padding: EdgeInsets.symmetric(horizontal: 30.w),
                             width: 1.sw,
                             child: Text(
+                              'Event description: ',
+                              style: TextStyle(
+                                  color: Constants.COLORS_PRIMARY_ORANGE_COLOR,
+                                  fontSize: 46.sp),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 30.w),
+                            width: 1.sw,
+                            child: Text(widget.data.eventDesc),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 30.w),
+                            width: 1.sw,
+                            child: Text(
                               'Event date: ',
                               style: TextStyle(
                                   color: Constants.COLORS_PRIMARY_ORANGE_COLOR,

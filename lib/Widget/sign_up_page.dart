@@ -80,7 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         alignment: Alignment.center,
                                         padding: const EdgeInsets.all(10),
                                         child: Text(
-                                          'SIGN_UP'.tr(),
+                                          'NEW_MEMBER_REGISTRATION'.tr(),
                                           style: TextStyle(
                                               fontSize: 60.sp,
                                               color: Colors.white),

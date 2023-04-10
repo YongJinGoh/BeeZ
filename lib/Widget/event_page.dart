@@ -319,11 +319,14 @@ class _EventPageState extends State<EventPage> {
       responseData.data['eventList'].forEach((res) {
         eventLists.add(EventModel.fromJson(res));
       });
-
+      responseData.data['joinList'].forEach((voucherData) {
+        joinLists.add(EventModel.fromJson(voucherData));
+      });
       responseData.data['attendList'].forEach((voucherData) {
         attendLists.add(EventModel.fromJson(voucherData));
       });
     }
+
     setState(() {});
     EasyLoading.dismiss();
 

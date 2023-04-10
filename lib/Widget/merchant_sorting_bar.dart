@@ -19,7 +19,7 @@ class MerchantSortingBar extends StatelessWidget {
           flex: 2,
           child: Padding(
             padding: EdgeInsets.only(left: 30.w, top: 5.h, bottom: 5.h),
-            child: Text('POPULAR_SHOP_NEARBY'.tr(),
+            child: Text('POPULAR_MERCHANT'.tr(),
                 style: TextStyle(
                   fontSize: 48.sp,
                   color: Constants.COLORS_PRIMARY_ORANGE_COLOR,

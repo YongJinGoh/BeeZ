@@ -9,8 +9,8 @@ class Constants {
   static const Color COLORS_PRIMARY_ORANGE_COLOR = Color(0xffec8314);
   static const Color COLORS_FONT_DESC = Color.fromARGB(255, 98, 178, 190);
 
-  // static const String NETWORK_URL = "https://beez2u.com/";
-  static const String NETWORK_URL = "https://ready2code.beez2u.com/";
+  static const String NETWORK_URL = "https://beez2u.com/";
+  // static const String NETWORK_URL = "https://ready2code.beez2u.com/";
 
   static const String PREF_ = "pref";
   static const String PREF_LOGIN = "isLogin";
@@ -42,6 +42,7 @@ class Constants {
   static const String NETWORK_GET_VENDOR_FC_LIST = "vendor/getVendorList?";
   static const String NETWORK_GET_BOOKING_LIST = "vendor/getBookingList";
 
+  static const String NETWORK_GET_EVENT_DETAILS = "vendor/getEventDetails/";
   static const String NETWORK_GET_FOLLOW_LIST = "vendor/getFollowList";
   static const String NETWORK_GET_EVENT_LIST = "vendor/getEventList";
   static const String NETWORK_POST_FOLLOW = "vendor/followMerchant";

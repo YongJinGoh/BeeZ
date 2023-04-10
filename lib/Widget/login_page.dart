@@ -1,4 +1,5 @@
 import '../main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,8 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:localization/localization.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'dart:async';
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -32,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   double emptyTopHeight = 0.4.sh;
   bool _loading = false;
   late SharedPreferences prefs;
-
+  bool _obscureText = true;
   // AccessToken _accessToken;
 
   TextEditingController nameController = TextEditingController();
@@ -45,6 +48,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    print('inside login');
+
     getToken();
     Future.delayed(Duration(seconds: 4)).then((value) => setState(() {
           emptyTopHeight = 0.0;
@@ -63,65 +68,131 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        initialRoute: "/",
         home: Scaffold(
-      extendBodyBehindAppBar: true,
-      body: Builder(
-        builder: (ctx) => Container(
-            color: Constants.COLORS_PRIMARY_COLOR,
-            child: SafeArea(
-              left: false,
-              right: false,
-              bottom: false,
-              child: Container(
-                  height: 1.sh,
-                  width: 1.sw,
-                  // decoration: BoxDecoration(
-                  //   image: DecorationImage(
-                  //       image: AssetImage('assets/images/login_bg.png'),
-                  //       fit: BoxFit.fill),
-                  // ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(0),
-                    child: SingleChildScrollView(
-                      physics: ScrollPhysics(),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          // AnimatedContainer(
-                          //   duration: Duration(seconds: 1),
-                          //   height: emptyTopHeight,
-                          // ),
-                          // const Logo(),
-                          // AnimatedContainer(
-                          //   duration: Duration(seconds: 1),
-                          //   height: emptyHeight,
-                          // ),
-                          Container(
-                            height: 160,
-                            width: 350,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 20.h, horizontal: 20.w),
-                            child: Image.asset('assets/images/logo-beez.png'),
-                          ),
-                          Container(
-                            height: 0.85.sh,
-                            // height: 1.sh,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30),
-                              ),
-                              color: Colors.white,
-                            ),
-                            child: Column(children: [
+          extendBodyBehindAppBar: true,
+          body: Builder(
+            builder: (ctx) => Container(
+                color: Constants.COLORS_PRIMARY_COLOR,
+                child: SafeArea(
+                  left: false,
+                  right: false,
+                  bottom: false,
+                  child: Container(
+                      height: 1.sh,
+                      width: 1.sw,
+                      // decoration: BoxDecoration(
+                      //   image: DecorationImage(
+                      //       image: AssetImage('assets/images/login_bg.png'),
+                      //       fit: BoxFit.fill),
+                      // ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: SingleChildScrollView(
+                          physics: ScrollPhysics(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
                               SizedBox(
-                                height: 50.h,
+                                height: 5.h,
                               ),
-                              Stack(
-                                children: [
+                              // AnimatedContainer(
+                              //   duration: Duration(seconds: 1),
+                              //   height: emptyTopHeight,
+                              // ),
+                              // const Logo(),
+                              // AnimatedContainer(
+                              //   duration: Duration(seconds: 1),
+                              //   height: emptyHeight,
+                              // ),
+                              Container(
+                                height: 160,
+                                width: 350,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 20.h, horizontal: 20.w),
+                                child:
+                                    Image.asset('assets/images/logo-beez.png'),
+                              ),
+                              Container(
+                                height: 0.85.sh,
+                                // height: 1.sh,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    topRight: Radius.circular(30),
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                child: Column(children: [
+                                  SizedBox(
+                                    height: 50.h,
+                                  ),
+                                  Stack(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        height: 120.h,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 30),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30.0)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                margin: EdgeInsets.only(
+                                                    left: 8.w, right: 6.w),
+                                                width: 90.w,
+                                                height: 90.w,
+                                                child: Image.asset(
+                                                  'assets/images/icon_username_login.png',
+                                                  fit: BoxFit.contain,
+                                                )),
+                                            Container(
+                                              height: 100.h,
+                                              width: 0.7.sw,
+                                              child: TextField(
+                                                style:
+                                                    TextStyle(fontSize: 50.sp),
+                                                controller: nameController,
+                                                decoration: InputDecoration(
+                                                  isDense: true,
+                                                  border: InputBorder.none,
+                                                  hintText: 'EMAIL'.tr(),
+                                                  hintStyle: TextStyle(
+                                                      height: 1.6,
+                                                      fontSize: 50.sp,
+                                                      color: Constants
+                                                          .COLORS_PRIMARY_COLOR),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      _loading
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : Container(),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 40.h,
+                                  ),
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     height: 120.h,
@@ -149,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                                             width: 90.w,
                                             height: 90.w,
                                             child: Image.asset(
-                                              'assets/images/icon_username_login.png',
+                                              'assets/images/icon_password_login.png',
                                               fit: BoxFit.contain,
                                             )),
                                         Container(
@@ -157,14 +228,15 @@ class _LoginPageState extends State<LoginPage> {
                                           width: 0.7.sw,
                                           child: TextField(
                                             style: TextStyle(fontSize: 50.sp),
-                                            controller: nameController,
+                                            controller: passwordController,
+                                            obscureText: true,
                                             decoration: InputDecoration(
                                               isDense: true,
                                               border: InputBorder.none,
-                                              hintText: 'EMAIL'.tr(),
+                                              hintText: 'PASSWORD'.tr(),
                                               hintStyle: TextStyle(
-                                                  height: 1.6,
                                                   fontSize: 50.sp,
+                                                  height: 1.6,
                                                   color: Constants
                                                       .COLORS_PRIMARY_COLOR),
                                             ),
@@ -173,202 +245,150 @@ class _LoginPageState extends State<LoginPage> {
                                       ],
                                     ),
                                   ),
-                                  _loading
-                                      ? Center(
-                                          child: CircularProgressIndicator(),
-                                        )
-                                      : Container(),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 40.h,
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                height: 120.h,
-                                margin: EdgeInsets.symmetric(horizontal: 30),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30.0)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                        margin: EdgeInsets.only(
-                                            left: 8.w, right: 6.w),
-                                        width: 90.w,
-                                        height: 90.w,
-                                        child: Image.asset(
-                                          'assets/images/icon_password_login.png',
-                                          fit: BoxFit.contain,
-                                        )),
-                                    Container(
-                                      height: 100.h,
-                                      width: 0.7.sw,
-                                      child: TextField(
-                                        style: TextStyle(fontSize: 50.sp),
-                                        controller: passwordController,
-                                        obscureText: true,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          border: InputBorder.none,
-                                          hintText: 'PASSWORD'.tr(),
-                                          hintStyle: TextStyle(
+                                  SizedBox(
+                                    height: 45.h,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      if (nameController.value.text.length !=
+                                              0 &&
+                                          passwordController
+                                                  .value.text.length !=
+                                              0) {
+                                        email = nameController.value.text;
+                                        password =
+                                            passwordController.value.text;
+                                        EasyLoading.show(status: 'loading...');
+                                        login(ctx);
+                                        // Navigator.pop(context);
+                                      } else {
+                                        ScaffoldMessenger.of(ctx)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              'MAKE_SURE_EMAIL_NOT_EMPTY'.tr()),
+                                        ));
+                                      }
+                                    },
+                                    child: Container(
+                                      height: 110.h,
+                                      width: 0.8.sw,
+                                      decoration: BoxDecoration(
+                                        color: Constants.COLORS_PRIMARY_COLOR,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                      ),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 0),
+                                      child: Center(
+                                        child: Text(
+                                          'LOGIN'.tr(),
+                                          style: TextStyle(
                                               fontSize: 50.sp,
-                                              height: 1.6,
-                                              color: Constants
-                                                  .COLORS_PRIMARY_COLOR),
+                                              color: Colors.white),
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 45.h,
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  if (nameController.value.text.length != 0 &&
-                                      passwordController.value.text.length !=
-                                          0) {
-                                    email = nameController.value.text;
-                                    password = passwordController.value.text;
-                                    EasyLoading.show(status: 'loading...');
-                                    login(ctx);
-                                    // Navigator.pop(context);
-                                  } else {
-                                    ScaffoldMessenger.of(ctx)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(
-                                          'MAKE_SURE_EMAIL_NOT_EMPTY'.tr()),
-                                    ));
-                                  }
-                                },
-                                child: Container(
-                                  height: 110.h,
-                                  width: 0.8.sw,
-                                  decoration: BoxDecoration(
-                                    color: Constants.COLORS_PRIMARY_COLOR,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: Center(
-                                    child: Text(
-                                      'LOGIN'.tr(),
-                                      style: TextStyle(
-                                          fontSize: 50.sp, color: Colors.white),
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => ForgetPasswordPage()));
-                                },
-                                child: Text(
-                                  'FORGET_PASSWORD'.tr(),
-                                  style: TextStyle(
-                                      fontSize: 50.sp,
-                                      color: Constants.COLORS_PRIMARY_COLOR),
-                                ),
-                              ),
-                              Text('CONNECT_WITH'.tr(),
-                                  style: TextStyle(fontSize: 40.sp)),
-                              SizedBox(
-                                height: 30.h,
-                              ),
-                              Container(
-                                width: 0.6.sw,
-                                height: 100.h,
-                                child: ElevatedButton.icon(
-                                    onPressed: () async {
-                                      facebookLogin(ctx);
-                                      // LoginPage.of(context).setLocale(Locale.fromSubtags(languageCode: 'cn'));
-                                      // print('inside');
-                                      // prefs =
-                                      //     await SharedPreferences.getInstance();
-                                      // prefs.setString(
-                                      //     Constants.PREF_LANGUAGE, 'cn');
-                                    },
-                                    icon: Image.asset(
-                                      'assets/images/square_facebook.png',
-                                      height: 75.w,
-                                      width: 75.w,
-                                      fit: BoxFit.contain,
-                                    ),
-                                    label: Text(
-                                      'LOGIN_FACEBOOK'.tr(),
-                                      style: TextStyle(fontSize: 35.sp),
-                                    )),
-                              ),
-                              Platform.isAndroid
-                                  ? SizedBox(
-                                      height: 0.h,
-                                    )
-                                  : SizedBox(
-                                      height: 20.h,
-                                    ),
-                              Platform.isAndroid
-                                  ? Container()
-                                  : Container(
-                                      height: 100.h,
-                                      width: 0.6.sw,
-                                      child: SignInWithAppleButton(
-                                        onPressed: () async {
-                                          appleLogin(ctx);
-                                        },
-                                      ),
-                                    ),
-                              SizedBox(
-                                height: 200.h,
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text('DONT_HAVE_ACCOUNT'.tr(),
-                                      style: TextStyle(fontSize: 35.sp)),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
                                   TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  ForgetPasswordPage()));
+                                    },
                                     child: Text(
-                                      'SIGN_UP'.tr(),
+                                      'FORGET_PASSWORD'.tr(),
                                       style: TextStyle(
-                                          fontSize: 35.sp,
+                                          fontSize: 50.sp,
                                           color:
                                               Constants.COLORS_PRIMARY_COLOR),
                                     ),
-                                    onPressed: () {
-                                      Navigator.of(ctx).push(MaterialPageRoute(
-                                          builder: (_) => SignUpPage()));
-                                      //signup screen
-                                    },
-                                  )
-                                ],
-                                mainAxisAlignment: MainAxisAlignment.center,
-                              ),
-                            ]),
-                          )
-                        ],
-                      ),
-                    ),
-                  )),
-            )),
-      ),
-    ));
+                                  ),
+                                  Text('CONNECT_WITH'.tr(),
+                                      style: TextStyle(fontSize: 40.sp)),
+                                  SizedBox(
+                                    height: 30.h,
+                                  ),
+                                  Container(
+                                    width: 0.6.sw,
+                                    height: 100.h,
+                                    child: ElevatedButton.icon(
+                                        onPressed: () async {
+                                          facebookLogin(ctx);
+                                          // LoginPage.of(context).setLocale(Locale.fromSubtags(languageCode: 'cn'));
+                                          // print('inside');
+                                          // prefs =
+                                          //     await SharedPreferences.getInstance();
+                                          // prefs.setString(
+                                          //     Constants.PREF_LANGUAGE, 'cn');
+                                        },
+                                        icon: Image.asset(
+                                          'assets/images/square_facebook.png',
+                                          height: 75.w,
+                                          width: 75.w,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        label: Text(
+                                          'LOGIN_FACEBOOK'.tr(),
+                                          style: TextStyle(fontSize: 35.sp),
+                                        )),
+                                  ),
+                                  Platform.isAndroid
+                                      ? SizedBox(
+                                          height: 0.h,
+                                        )
+                                      : SizedBox(
+                                          height: 20.h,
+                                        ),
+                                  Platform.isAndroid
+                                      ? Container()
+                                      : Container(
+                                          height: 100.h,
+                                          width: 0.6.sw,
+                                          child: SignInWithAppleButton(
+                                            onPressed: () async {
+                                              appleLogin(ctx);
+                                            },
+                                          ),
+                                        ),
+                                  SizedBox(
+                                    height: 200.h,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Text('DONT_HAVE_ACCOUNT'.tr(),
+                                          style: TextStyle(fontSize: 35.sp)),
+                                      TextButton(
+                                        child: Text(
+                                          'SIGN_UP'.tr(),
+                                          style: TextStyle(
+                                              fontSize: 35.sp,
+                                              color: Constants
+                                                  .COLORS_PRIMARY_COLOR),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(ctx).push(
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      SignUpPage()));
+                                          //signup screen
+                                        },
+                                      )
+                                    ],
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  ),
+                                ]),
+                              )
+                            ],
+                          ),
+                        ),
+                      )),
+                )),
+          ),
+        ));
   }
 
   facebookLogin(BuildContext ctx) async {

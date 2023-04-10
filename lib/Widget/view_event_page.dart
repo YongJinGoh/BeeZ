@@ -256,9 +256,19 @@ class _ViewEventPageState extends State<ViewEventPage> {
                               onPressed: () {
                                 String fullName = nameController.value.text;
                                 String phone = phoneController.value.text;
-                                // String email = emailController.value.text;
-                                // String icStr = icController.value.text;
-                                attendEvent();
+                                String email = emailController.value.text;
+                                String icStr = icController.value.text;
+                                if (fullName.length != 0 &&
+                                    phone.length != 0 &&
+                                    email.length != 0) {
+                                  attendEvent();
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(
+                                        'Please make sure all field have been fill up.'),
+                                  ));
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Constants.COLORS_PRIMARY_COLOR,
@@ -270,7 +280,7 @@ class _ViewEventPageState extends State<ViewEventPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Text(
-                                  'Attend Event',
+                                  'Join Event',
                                   style: TextStyle(fontSize: 50.sp),
                                 ),
                               ),
@@ -290,7 +300,6 @@ class _ViewEventPageState extends State<ViewEventPage> {
 
   String setUpQR() {
     String link = '{"event_id":' + widget.data.id + ',"user_id"' + userId + '}';
-
     return link;
   }
 
@@ -300,9 +309,11 @@ class _ViewEventPageState extends State<ViewEventPage> {
     userName = prefs.getString(Constants.PREF_NAME) ?? '';
     userPhone = prefs.getString(Constants.PREF_PHONE) ?? '';
     userId = prefs.getString(Constants.PREF_ID) ?? '';
+    userEmail = prefs.getString(Constants.PREF_EMAIL) ?? '';
 
     nameController = TextEditingController(text: userName);
     phoneController = TextEditingController(text: userPhone);
+    emailController = TextEditingController(text: userEmail);
   }
 
   attendEvent() async {
@@ -312,16 +323,16 @@ class _ViewEventPageState extends State<ViewEventPage> {
 
     String fullName = nameController.value.text;
     String phone = phoneController.value.text;
-    // String email = emailController.value.text;
-    // String icStr = icController.value.text;
+    String email = emailController.value.text;
+    String icStr = icController.value.text;
 
     String eventID = widget.data.id;
 
     Map<String, String> bodyArg = {
       'name': fullName,
       'phone': phone,
-      // 'email': email,
-      // 'ic': icStr,
+      'email': email,
+      'ic': icStr,
       'event_id': eventID
     };
 

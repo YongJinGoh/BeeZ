@@ -3,66 +3,144 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:scan/scan.dart';
+// import 'package:image_picker/image_picker.dart';
+import 'package:images_picker/images_picker.dart';
+import '../Widget/qr_result_page.dart';
+import '../Model/qr_scan_result_model.dart';
+import 'dart:async';
+import 'dart:convert';
+import '../Widget/main_title_bar.dart';
 
-class QrScanPage extends StatelessWidget {
-  QrScanPage();
+class QrScanPage extends StatefulWidget {
+  // QrScanPage({required this.controller});
+
+  @override
+  _QrScanPageState createState() => _QrScanPageState();
+}
+
+class _QrScanPageState extends State<QrScanPage> {
+  String qrcode = 'Unknown';
+  ScanController controller = ScanController();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {});
+    // setState(() {
+    //   getdatafromserver();
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.expand(
-      //   child: SingleChildScrollView(
-      // physics: ScrollPhysics(),
-      // child: Container(
-      //     child: Column(
-      //   mainAxisSize: MainAxisSize.min,
-      //   mainAxisAlignment: MainAxisAlignment.start,
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   children: [
-      //     Stack(
-      //       alignment: Alignment.topCenter,
-      //       children: [
-      //         Container(
-      //           height: 160.h,
-      //           color: Colors.green,
-      //         ),
-      //         Padding(
-      //           padding: EdgeInsets.only(top: 40.h),
-      //           child: Text(
-      //             "QR",
-      //             style: TextStyle(
-      //                 color: Colors.white,
-      //                 fontSize: 22,
-      //                 fontWeight: FontWeight.bold),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //     SizedBox(
-      //       height: 150.h,
-      //     ),
-      //     Container(
-      //       padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 20.h),
-      //       decoration: BoxDecoration(
-      //         border: Border.all(
-      //           color: Colors.white,
-      //         ),
-      //         borderRadius: BorderRadius.all(Radius.circular(10)),
-      //         color: Colors.white),
-      //       child: QrImage(
-      //         data: "1234567890",
-      //         version: QrVersions.auto,
-      //         size: 250.0,
-      //       ),
-      //     ),
-      //     SizedBox(height: 30.h),
-      //     Text('Please present QR to merchant.',style: TextStyle(fontSize: 55.sp,),),
-      //   ],
-      // )),)
-        );
+    return WillPopScope(
+      onWillPop: (() async {
+        controller.pause();
+        return true;
+      }),
+      child: SafeArea(
+        child: SizedBox.expand(
+          child: Container(
+            color: Colors.black,
+            width: 1.sw,
+            height: 1.sh,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  MainTitleBar(
+                      title: 'Scan QR',
+                      action: () {
+                        controller.pause();
+                        Navigator.pop(context);
+                      }),
+                  SizedBox(
+                    height: 200.h,
+                  ),
+                  Container(
+                    width: 0.75.sw, // custom wrap size
+                    height: 0.75.sw,
+                    child: ScanView(
+                      controller: controller,
+                      scanAreaScale: .7,
+                      scanLineColor: Colors.green.shade400,
+                      onCapture: (data) async {
+                        controller.pause();
+                        try {
+                          var result = QrResult.fromJson(jsonDecode(data));
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      new QrResultPage(data: result)));
+                        } on Exception catch (e) {
+                          Navigator.pop(context, false);
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 150.h,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      scanQRCodeFromLibrary();
+                    },
+                    child: Text(
+                      'Pick QR from library',
+                      style: TextStyle(fontSize: 50.sp),
+                    ),
+                  )
+                ]),
+          ),
+        ),
+      ),
+    );
   }
 
-  Future<void> scanQRCode() async{
-    String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", false, ScanMode.QR);
+  Future<void> scanQRCode() async {
+    String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        "#ff6666", "Cancel", false, ScanMode.QR);
   }
 
+  Future<void> scanQRCodeFromLibrary() async {
+    List<Media>? res = await ImagesPicker.pick();
+    if (res != null) {
+      String? str = await Scan.parse(res[0].path);
+
+      if (str != null) {
+        controller.pause();
+        qrcode = str;
+        try {
+          var result = QrResult.fromJson(jsonDecode(qrcode));
+
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      new QrResultPage(data: result)));
+        } on Exception catch (e) {
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          //   content: Text(
+          //     'Invalid QR code',
+          //     style: TextStyle(color: Colors.white),
+          //   ),
+          // ));
+          Navigator.pop(context, false);
+
+          // print('1');
+          // Future.delayed(Duration(milliseconds: 1000), () {
+
+          // });
+        }
+      } else {
+        Navigator.pop(context, false);
+      }
+    } else {
+      Navigator.pop(context, false);
+    }
+  }
 }

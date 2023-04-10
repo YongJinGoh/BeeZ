@@ -17,6 +17,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'merchant_details_page_2.dart';
+import '../Widget/merchant_sorting_bar.dart';
+import '../Widget/merchant_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -587,21 +589,30 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            left: 40.w, top: 40.h, bottom: 20.h),
-                        child: Text(
-                          'POPULAR_MERCHANT'.tr(),
-                          style: TextStyle(
-                            fontSize: 48.sp,
-                            color: Constants.COLORS_PRIMARY_ORANGE_COLOR,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                    SizedBox(
+                      height: 20.h,
                     ),
+                    MerchantSortingBar(
+                      onTap: () => viewAll(),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    // Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Container(
+                    //     margin: EdgeInsets.only(
+                    //         left: 40.w, top: 40.h, bottom: 20.h),
+                    //     child: Text(
+                    //       'POPULAR_MERCHANT'.tr(),
+                    //       style: TextStyle(
+                    //         fontSize: 48.sp,
+                    //         color: Constants.COLORS_PRIMARY_ORANGE_COLOR,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     _isLoading
                         ? CircularProgressIndicator()
                         : _isError
@@ -711,6 +722,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
 
     return lists;
+  }
+
+  viewAll() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => MerchantPage()));
   }
 
   showQRCode(String link, String id) {
